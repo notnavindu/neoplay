@@ -1,5 +1,6 @@
 interface CliCommand {
 	text: string;
+	type: 'command' | 'info' | 'error';
 }
 
 interface OnboardingStep {

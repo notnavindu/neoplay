@@ -13,7 +13,6 @@
 		"image:default",
 		"menu:default",
 		"tray:default",
-		"stronghold:default",
 		"shell:default",
 		"shell:allow-open"
 	]

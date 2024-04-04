@@ -39,6 +39,7 @@
 		"@fontsource/geist-mono": "^5.0.2",
 		"@tauri-apps/plugin-shell": "2.0.0-beta.2",
 		"@tauri-apps/plugin-stronghold": "2.0.0-beta.2",
-		"axios": "^1.6.8"
+		"axios": "^1.6.8",
+		"dayjs": "^1.11.10"
 	}
 }

@@ -1,16 +1,13 @@
 <script lang="ts">
 	import CliRow from '../lib/components/auth/CliRow.svelte';
 
-	import { onMount } from 'svelte';
-	import CommandInputRow from '../lib/components/auth/CommandInputRow.svelte';
-	import { generateRandomString, getAuthorizeUrl } from '$lib/utils/auth.utils';
 	import OnboardingStepper from '$lib/components/auth/OnboardingStepper.svelte';
 	import { slide } from 'svelte/transition';
-	import { page } from '$app/stores';
 
 	let commands: CliCommand[] = [
 		{
-			text: 'Welcome to neoplay'
+			text: 'Welcome to neoplay',
+			type: 'info'
 		}
 	];
 </script>
@@ -27,11 +24,9 @@
 
 	{#each commands as command, i (i)}
 		<div in:slide>
-			<CliRow>{command.text}</CliRow>
+			<CliRow type={command.type}>{command.text}</CliRow>
 		</div>
 	{/each}
-
-	<!-- <a href={getAuthorizeUrl(clientId, state)} target="_blank">Login</a> -->
 
 	<OnboardingStepper
 		on:pushToStack={(event) => {
