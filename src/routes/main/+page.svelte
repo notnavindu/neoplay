@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CurrentTrack from '$lib/components/web-player/CurrentTrack.svelte';
 	import { spotifyPlayer, spotifySdk } from '$lib/stores/spotify.store';
 	import { currentTrack } from '$lib/stores/track.store';
 	import { onMount } from 'svelte';
@@ -9,6 +10,7 @@
 	});
 </script>
 
-<div>{$currentTrack?.name}</div>
-
+<div class="w-full">
+	<CurrentTrack />
+</div>
 <button on:click={() => $spotifyPlayer?.togglePlay()}>Play</button>

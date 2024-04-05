@@ -9,6 +9,5 @@
 	<div class="flex-grow overflow-scroll border-b border-neo-gray-1"></div>
 
 	<Queue />
-
 	<PlayingDevice />
 </div>
