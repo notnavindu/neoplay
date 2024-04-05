@@ -21,7 +21,14 @@
 
 		if (!accessTokenParsed) return;
 
-		const sdk = SpotifyApi.withAccessToken(clientId, accessTokenParsed);
+		const sdk = await SpotifyApi.withAccessToken(clientId, accessTokenParsed);
+		try {
+			await sdk.getAccessToken();
+		} catch (error) {
+			console.log('NEEDS FIX', error);
+		}
+
+		// console.log('🚀 ~ onMount ~ sdk:d', );
 		spotifySdk.set(sdk);
 		if (sdk) $auth.isLoggedIn = true;
 	});

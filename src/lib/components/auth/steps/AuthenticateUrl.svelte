@@ -73,7 +73,7 @@
 			console.log('🚀 ~ handleEnterPress ~ response:', response);
 
 			saveSpotifyAccessTokenResponse(response);
-			const sdk = SpotifyApi.withAccessToken(clientId, response);
+			const sdk = await SpotifyApi.withAccessToken(clientId, response);
 			spotifySdk.set(sdk);
 			$auth.isLoggedIn = true;
 		} catch (error) {
