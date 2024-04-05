@@ -23,9 +23,11 @@
 
 		const sdk = SpotifyApi.withAccessToken(clientId, accessTokenParsed);
 		spotifySdk.set(sdk);
+		if (sdk) $auth.isLoggedIn = true;
 	});
 
 	$: if ($auth.isLoggedIn) goto('/main');
+	else goto('/');
 </script>
 
 <main class="bg-neo-black w-full min-h-screen text-white flex text-xs">
