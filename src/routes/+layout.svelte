@@ -9,6 +9,7 @@
 	import '@fontsource/geist-mono/700.css';
 	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
 	import { onMount } from 'svelte';
+	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import '../app.css';
 
 	onMount(async () => {
@@ -33,10 +34,14 @@
 		if (sdk) $auth.isLoggedIn = true;
 	});
 
+	const queryClient = new QueryClient();
+
 	$: if ($auth.isLoggedIn) goto('/main');
 	else goto('/');
 </script>
 
-<main class="bg-neo-black w-full min-h-screen text-white flex text-xs">
-	<slot />
-</main>
+<QueryClientProvider client={queryClient}>
+	<main class="bg-neo-black w-full min-h-screen text-white flex text-xs">
+		<slot />
+	</main>
+</QueryClientProvider>
