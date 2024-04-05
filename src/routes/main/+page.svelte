@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { spotifySdk } from '$lib/stores/spotify.store';
+	import { spotifyPlayer, spotifySdk } from '$lib/stores/spotify.store';
+	import { currentTrack } from '$lib/stores/track.store';
 	import { onMount } from 'svelte';
 
 	let data: any;
@@ -8,6 +9,6 @@
 	});
 </script>
 
-this is where the content should go
+<div>{$currentTrack?.name}</div>
 
-{JSON.stringify(data)}
+<button on:click={() => $spotifyPlayer?.togglePlay()}>Play</button>

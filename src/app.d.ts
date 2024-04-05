@@ -1,3 +1,4 @@
+import type { Window as W } from '@types/spotify-web-playback-sdk';
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
@@ -9,5 +10,7 @@ declare global {
 		// interface Platform {}
 	}
 }
+
+declare interface Window extends W {}
 
 export {};

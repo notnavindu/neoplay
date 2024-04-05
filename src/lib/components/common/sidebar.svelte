@@ -1,4 +1,5 @@
 <script>
+	import PlayingDevice from '../web-player/PlayingDevice.svelte';
 	import Queue from './queue.svelte';
 </script>
 
@@ -9,5 +10,5 @@
 
 	<Queue />
 
-	<div class="p-4">// PLAYING ON</div>
+	<PlayingDevice />
 </div>

@@ -41,6 +41,7 @@
 		"@tanstack/svelte-query": "^5.28.13",
 		"@tauri-apps/plugin-shell": "2.0.0-beta.2",
 		"@tauri-apps/plugin-stronghold": "2.0.0-beta.2",
+		"@types/spotify-web-playback-sdk": "^0.1.19",
 		"axios": "^1.6.8",
 		"dayjs": "^1.11.10"
 	}

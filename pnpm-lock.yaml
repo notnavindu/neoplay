@@ -20,6 +20,9 @@ dependencies:
   '@tauri-apps/plugin-stronghold':
     specifier: 2.0.0-beta.2
     version: 2.0.0-beta.2
+  '@types/spotify-web-playback-sdk':
+    specifier: ^0.1.19
+    version: 0.1.19
   axios:
     specifier: ^1.6.8
     version: 1.6.8
@@ -814,6 +817,10 @@ packages:
   /@types/semver@7.5.8:
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
     dev: true
+
+  /@types/spotify-web-playback-sdk@0.1.19:
+    resolution: {integrity: sha512-Is7x9gMIMoERxE0uvb2SPFQoy5OR7nO1B24CJiaDAUIdq195OLTQedN95XJQtxB2mfm+zi2j3LvEtpPdHKnB3w==}
+    dev: false
 
   /@typescript-eslint/eslint-plugin@7.5.0(@typescript-eslint/parser@7.5.0)(eslint@8.57.0)(typescript@5.4.3):
     resolution: {integrity: sha512-HpqNTH8Du34nLxbKgVMGljZMG0rJd2O9ecvr2QLYp+7512ty1j42KnsFwspPXg1Vh8an9YImf6CokUBltisZFQ==}
