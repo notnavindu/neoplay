@@ -11,8 +11,10 @@
 		sha256
 	} from '$lib/utils/auth.utils';
 	import { open } from '@tauri-apps/plugin-shell';
-	import { getAccessToken } from '$lib/actions/auth.actions';
+	import { getAccessToken, saveSpotifyAccessTokenResponse } from '$lib/actions/auth.actions';
 	import { auth } from '$lib/stores/auth.store';
+	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
+	import { spotifySdk } from '$lib/stores/spotify.store';
 
 	const dispatch = createEventDispatcher<OnboardingStepDispatcher>();
 
@@ -68,19 +70,12 @@
 				});
 
 			const response = await getAccessToken(clientId, code, codeVerifier);
+			console.log('🚀 ~ handleEnterPress ~ response:', response);
 
-			auth.login(
-				response.access_token,
-				response.refresh_token,
-				new Date(Date.now() + response.expires_in * 1000)
-			);
-
-			localStorage.setItem(storageKeys.accessToken, response.access_token);
-			localStorage.setItem(storageKeys.refreshToken, response.refresh_token);
-			localStorage.setItem(
-				storageKeys.expiresAt,
-				new Date(Date.now() + response.expires_in * 1000).toISOString()
-			);
+			saveSpotifyAccessTokenResponse(response);
+			const sdk = SpotifyApi.withAccessToken(clientId, response);
+			spotifySdk.set(sdk);
+			$auth.isLoggedIn = true;
 		} catch (error) {
 			console.log('error:', error);
 			dispatch('pushToStack', { text: 'Something went wrong', type: 'error' });

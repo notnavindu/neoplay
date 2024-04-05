@@ -1,31 +1,28 @@
-<script>
-	import Sidebar from '$lib/components/common/sidebar.svelte';
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { storageKeys } from '$lib/constants/storage.const';
+	import { auth } from '$lib/stores/auth.store';
+	import { spotifySdk } from '$lib/stores/spotify.store';
 	import '@fontsource/geist-mono/400.css';
 	import '@fontsource/geist-mono/500.css';
 	import '@fontsource/geist-mono/600.css';
 	import '@fontsource/geist-mono/700.css';
-	import '../app.css';
-	import { auth } from '$lib/stores/auth.store';
-	import { goto } from '$app/navigation';
-	import { storageKeys } from '$lib/constants/storage.const';
-	import dayjs from 'dayjs';
+	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
 	import { onMount } from 'svelte';
+	import '../app.css';
 
-	onMount(() => {
-		const accessToken = localStorage.getItem(storageKeys.accessToken);
-		const refreshToken = localStorage.getItem(storageKeys.refreshToken);
-		const expiresAt = localStorage.getItem(storageKeys.expiresAt);
+	onMount(async () => {
+		const accessTokenRaw = localStorage.getItem(storageKeys.accessToken) as string;
+		const clientId = localStorage.getItem(storageKeys.clientId) as string;
 
-		if (accessToken && refreshToken && expiresAt) {
-			const expiresAtParsed = dayjs(expiresAt);
+		if (!accessTokenRaw || !clientId) return;
 
-			if (expiresAtParsed.isBefore(dayjs())) {
-				console.log('NEEDS TO REFRESH HERE');
-				auth.logout();
-			} else {
-				auth.login(accessToken, refreshToken, expiresAtParsed.toDate());
-			}
-		}
+		const accessTokenParsed = JSON.parse(accessTokenRaw) as SpotifyAccessTokenResponse;
+
+		if (!accessTokenParsed) return;
+
+		const sdk = SpotifyApi.withAccessToken(clientId, accessTokenParsed);
+		spotifySdk.set(sdk);
 	});
 
 	$: if ($auth.isLoggedIn) goto('/main');
