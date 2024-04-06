@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { refreshAccessToken, saveSpotifyAccessTokenResponse } from '$lib/actions/auth.actions';
 	import { storageKeys } from '$lib/constants/storage.const';
 	import { auth } from '$lib/stores/auth.store';
 	import { spotifySdk } from '$lib/stores/spotify.store';
@@ -22,20 +23,22 @@
 
 		if (!accessTokenParsed) return;
 
-		const sdk = SpotifyApi.withAccessToken(clientId, accessTokenParsed);
+		refreshAccessToken(clientId, accessTokenParsed.refresh_token).then(async (newToken) => {
+			console.log('NEWW', newToken);
+			const sdk = SpotifyApi.withAccessToken(clientId, newToken);
 
-		// console.log('🚀 ~ onMount ~ sdk:d', );
-		spotifySdk.set(sdk);
-		console.log('getting me');
+			const me = await sdk.currentUser.profile();
+			console.log('🚀 ~ refreshAccessToken ~ me2:', me);
 
-		sdk.currentUser.profile().then((me) => {
-			console.log('🚀 ~ onMount ~ me:', me);
-
-			if (me) $auth.isLoggedIn = true;
-			else {
+			if (!me) {
 				localStorage.removeItem(storageKeys.accessToken);
 				$auth.isLoggedIn = false;
+				return;
 			}
+
+			saveSpotifyAccessTokenResponse(newToken);
+			spotifySdk.set(sdk);
+			$auth.isLoggedIn = true;
 		});
 	});
 

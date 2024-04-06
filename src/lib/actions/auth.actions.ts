@@ -18,3 +18,15 @@ export const getAccessToken = async (client_id: string, code: string, code_verif
 export const saveSpotifyAccessTokenResponse = (token: SpotifyAccessTokenResponse) => {
 	localStorage.setItem(storageKeys.accessToken, JSON.stringify(token));
 };
+
+export const refreshAccessToken = async (client_id: string, refresh_token: string) => {
+	const params = new URLSearchParams({
+		grant_type: 'refresh_token',
+		client_id,
+		refresh_token
+	});
+
+	return await axios
+		.post('https://accounts.spotify.com/api/token', params)
+		.then((res) => res.data as SpotifyAccessTokenResponse);
+};

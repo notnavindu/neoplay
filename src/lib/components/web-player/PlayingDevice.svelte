@@ -10,7 +10,11 @@
 			<div class="h-full w-full shimmer"></div>
 		{:then devices}
 			{@const activeDevice = devices?.devices.find((d) => d.is_active)}
-			<div>// PLAYING ON: <span class="text-neo-blue">{activeDevice?.name}</span></div>
+			{#if activeDevice}
+				<div>// PLAYING ON: <span class="text-neo-blue">{activeDevice?.name}</span></div>
+			{:else}
+				<div>// PLAYING ON: Another Device</div>
+			{/if}
 		{/await}
 	{/if}
 </div>

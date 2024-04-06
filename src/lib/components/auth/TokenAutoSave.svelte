@@ -7,6 +7,7 @@
 		async () => {
 			console.log('Saving token...');
 			const token = await $spotifySdk?.getAccessToken();
+			console.log('🚀 ~ token:', token);
 			if (token) saveSpotifyAccessTokenResponse(token as SpotifyAccessTokenResponse);
 		},
 		1000 * 60 * 15
