@@ -3,5 +3,7 @@ export const scopes = [
 	'user-read-email',
 	'user-read-private',
 	'user-read-playback-state',
-	'user-read-currently-playing'
+	'user-read-currently-playing',
+	'playlist-read-private',
+	'playlist-read-collaborative'
 ].join(' ');

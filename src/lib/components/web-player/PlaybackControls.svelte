@@ -21,7 +21,7 @@
 
 	<button on:click={handlePlayPress} class="w-6 h-6 bg-white/40 flex items-center justify-center">
 		{#if $spotifyPlaybackState?.paused}
-			p
+			▶
 		{:else}
 			||
 		{/if}
