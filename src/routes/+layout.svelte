@@ -1,6 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { refreshAccessToken, saveSpotifyAccessTokenResponse } from '$lib/actions/auth.actions';
+	import {
+		getSavedAccessToken,
+		refreshAccessToken,
+		saveSpotifyAccessTokenResponse
+	} from '$lib/actions/auth.actions';
 	import { storageKeys } from '$lib/constants/storage.const';
 	import { auth } from '$lib/stores/auth.store';
 	import { spotifySdk } from '$lib/stores/spotify.store';
@@ -14,16 +18,10 @@
 	import '../app.css';
 
 	onMount(() => {
-		const accessTokenRaw = localStorage.getItem(storageKeys.accessToken) as string;
-		const clientId = localStorage.getItem(storageKeys.clientId) as string;
+		const { accessToken, clientId } = getSavedAccessToken();
+		if (!accessToken || !clientId) return console.log('Handle error');
 
-		if (!accessTokenRaw || !clientId) return;
-
-		const accessTokenParsed = JSON.parse(accessTokenRaw) as SpotifyAccessTokenResponse;
-
-		if (!accessTokenParsed) return;
-
-		refreshAccessToken(clientId, accessTokenParsed.refresh_token).then(async (newToken) => {
+		refreshAccessToken(clientId, accessToken.refresh_token).then(async (newToken) => {
 			console.log('NEWW', newToken);
 			const sdk = SpotifyApi.withAccessToken(clientId, newToken);
 
