@@ -5,3 +5,16 @@
 body {
 	font-family: 'Geist Mono', monospace;
 }
+
+.shimmer-bg {
+	background: linear-gradient(-45deg, #000 40%, #4891ff21 50%, #000 60%);
+	background-size: 300%;
+	background-position-x: 100%;
+	animation: shimmer 1s infinite linear;
+}
+
+@keyframes shimmer {
+	to {
+		background-position-x: 0%;
+	}
+}

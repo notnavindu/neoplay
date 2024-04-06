@@ -9,7 +9,7 @@
 			const token = await $spotifySdk?.getAccessToken();
 			if (token) saveSpotifyAccessTokenResponse(token as SpotifyAccessTokenResponse);
 		},
-		15 * 60 * 1000
+		1000 * 60 * 15
 	);
 
 	onDestroy(() => {

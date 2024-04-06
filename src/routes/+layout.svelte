@@ -23,21 +23,27 @@
 		if (!accessTokenParsed) return;
 
 		const sdk = await SpotifyApi.withAccessToken(clientId, accessTokenParsed);
-		try {
-			await sdk.getAccessToken();
-		} catch (error) {
-			console.log('NEEDS FIX', error);
-		}
 
 		// console.log('🚀 ~ onMount ~ sdk:d', );
 		spotifySdk.set(sdk);
-		if (sdk) $auth.isLoggedIn = true;
+		console.log('getting me');
+
+		const me = await sdk.currentUser.profile();
+		console.log('🚀 ~ onMount ~ me:', me);
+
+		if (me) $auth.isLoggedIn = true;
+		else {
+			localStorage.removeItem(storageKeys.accessToken);
+			$auth.isLoggedIn = false;
+		}
 	});
 
 	const queryClient = new QueryClient();
 
-	$: if ($auth.isLoggedIn) goto('/main');
-	else goto('/');
+	$: {
+		if ($auth.isLoggedIn) goto('/main');
+		else goto('/');
+	}
 </script>
 
 <QueryClientProvider client={queryClient}>
