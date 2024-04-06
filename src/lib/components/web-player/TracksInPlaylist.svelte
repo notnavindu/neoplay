@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { switchPlaylist } from '$lib/actions/player.actions';
 	import { QUERY_KEYS } from '$lib/constants/query.const';
 	import { spotifySdk } from '$lib/stores/spotify.store';
 	import { createInfiniteQuery } from '@tanstack/svelte-query';
@@ -6,6 +7,7 @@
 
 	export let id: string;
 	export let open: boolean;
+	export let playlistContextUri: string;
 
 	const limit = 30;
 
@@ -16,7 +18,7 @@
 			$spotifySdk?.playlists.getPlaylistItems(
 				id,
 				undefined,
-				'next,href,items(track(id,name))',
+				'next,items(track(id,name,uri))',
 				pageParam.limit as 50,
 				pageParam.offset
 			),
@@ -40,12 +42,13 @@
 			{#each $tracksInPlaylistQuery.data.pages as page}
 				{#if page?.items}
 					{#each page.items as item, i (item.track.id)}
-						<div
+						<button
+							on:click={() => switchPlaylist(playlistContextUri, item.track.uri)}
 							in:fly|global={{ y: 10, delay: 10 * i }}
-							class="overflow-hidden whitespace-nowrap text-ellipsis"
+							class="overflow-hidden whitespace-nowrap text-ellipsis text-left block w-full"
 						>
 							♪ {item.track.name}
-						</div>
+						</button>
 					{/each}
 				{/if}
 			{/each}

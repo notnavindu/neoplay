@@ -30,7 +30,7 @@
 		{#if page}
 			{#each page.items as playlist, i (playlist.id)}
 				<div in:fly|global={{ y: 10, delay: 10 * i }}>
-					<PlaylistRow id={playlist.id} name={playlist.name} />
+					<PlaylistRow id={playlist.id} name={playlist.name} playlistContextUri={playlist.uri} />
 				</div>
 			{/each}
 		{/if}
