@@ -6,6 +6,7 @@
 		saveSpotifyAccessTokenResponse
 	} from '$lib/actions/auth.actions';
 	import { storageKeys } from '$lib/constants/storage.const';
+	import { ONE_MINUTE_MS } from '$lib/constants/time.const';
 	import { auth } from '$lib/stores/auth.store';
 	import { spotifySdk } from '$lib/stores/spotify.store';
 	import '@fontsource/geist-mono/400.css';
@@ -42,7 +43,14 @@
 		});
 	});
 
-	const queryClient = new QueryClient();
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				staleTime: ONE_MINUTE_MS * 9,
+				gcTime: ONE_MINUTE_MS * 10
+			}
+		}
+	});
 
 	$: {
 		if ($auth.isLoggedIn) goto('/main');

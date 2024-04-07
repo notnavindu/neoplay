@@ -8,7 +8,7 @@
 </script>
 
 <div
-	class="w-full h-screen fixed inset-0 backdrop-blur-sm backdrop-brightness-90 flex items-center justify-center"
+	class="w-full h-screen fixed inset-0 backdrop-blur-sm backdrop-brightness-90 flex items-center justify-center z-50"
 >
 	<div class="w-full max-w-sm bg-black p-4 border border-white relative">
 		{#if closable}

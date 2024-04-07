@@ -1,3 +1,3 @@
 {
-	"conventionalCommits.scopes": ["auth", "player"]
+	"conventionalCommits.scopes": ["auth", "player", "queue", "time-matrix"]
 }
