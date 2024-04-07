@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {
+		spotifyDeviceId,
 		spotifyPlaybackState,
 		spotifyPlayer,
 		spotifyPlayerReady,
@@ -13,6 +14,7 @@
 	const onPlayerReady: Spotify.PlaybackInstanceListener = ({ device_id }) => {
 		console.log('Ready: ', device_id);
 		$spotifyPlayerReady = true;
+		$spotifyDeviceId = device_id;
 	};
 
 	const onPlayerNotReady: Spotify.PlaybackInstanceListener = ({ device_id }) => {

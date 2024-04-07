@@ -35,11 +35,11 @@
 					♪ {track.name}
 				</div>
 			{:else}
-				<div class="w-full h-3 shimmer"></div>
-				<div class="w-full h-3 shimmer"></div>
-				<div class="w-full h-3 shimmer"></div>
-				<div class="w-full h-3 shimmer"></div>
-				<div class="w-full h-3 shimmer"></div>
+				<div class="w-full h-3 shimmer-bg"></div>
+				<div class="w-full h-3 shimmer-bg"></div>
+				<div class="w-full h-3 shimmer-bg"></div>
+				<div class="w-full h-3 shimmer-bg"></div>
+				<div class="w-full h-3 shimmer-bg"></div>
 			{/each}
 		</div>
 	</div>

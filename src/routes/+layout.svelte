@@ -15,28 +15,30 @@
 	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import { onMount } from 'svelte';
+	import { Toaster } from 'svelte-french-toast';
 	import '../app.css';
+
+	let loading = true;
 
 	onMount(() => {
 		const { accessToken, clientId } = getSavedAccessToken();
-		if (!accessToken || !clientId) return console.log('Handle error');
+		if (!accessToken || !clientId) return (loading = false);
 
 		refreshAccessToken(clientId, accessToken.refresh_token).then(async (newToken) => {
-			console.log('NEWW', newToken);
 			const sdk = SpotifyApi.withAccessToken(clientId, newToken);
 
 			const me = await sdk.currentUser.profile();
-			console.log('🚀 ~ refreshAccessToken ~ me2:', me);
 
 			if (!me) {
 				localStorage.removeItem(storageKeys.accessToken);
 				$auth.isLoggedIn = false;
-				return;
+				return (loading = false);
 			}
 
 			saveSpotifyAccessTokenResponse(newToken);
 			spotifySdk.set(sdk);
 			$auth.isLoggedIn = true;
+			loading = false;
 		});
 	});
 
@@ -49,7 +51,15 @@
 </script>
 
 <QueryClientProvider client={queryClient}>
-	<main class="bg-neo-black w-full min-h-screen text-white flex text-xs">
-		<slot />
-	</main>
+	<Toaster />
+
+	{#if loading}
+		<div>
+			<div>Loading</div>
+		</div>
+	{:else}
+		<main class="bg-neo-black w-full min-h-screen text-white flex text-xs">
+			<slot />
+		</main>
+	{/if}
 </QueryClientProvider>
