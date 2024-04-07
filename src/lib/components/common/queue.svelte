@@ -30,7 +30,7 @@
 					♪ {current.name}
 				</div>
 			{/if}
-			{#each queue as track, i (track.id)}
+			{#each queue as track, i (`${track.id} ${i}`)}
 				<div class="opacity-75" in:fly={{ y: 10, delay: 100 * i }}>
 					♪ {track.name}
 				</div>
