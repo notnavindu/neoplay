@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CurrentTrack from '$lib/components/web-player/CurrentTrack.svelte';
+	import CurrentTrack from '$lib/components/ui/CurrentTrack.svelte';
 </script>
 
 <div class="w-full">

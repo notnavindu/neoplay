@@ -1,6 +1,6 @@
 <script>
-	import PlayingDevice from '../web-player/PlayingDevice.svelte';
-	import UserPlaylists from '../web-player/UserPlaylists.svelte';
+	import PlayingDevice from '../ui/PlayingDevice.svelte';
+	import UserPlaylists from '../ui/UserPlaylists.svelte';
 	import Queue from './queue.svelte';
 </script>
 
