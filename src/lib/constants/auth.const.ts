@@ -4,6 +4,7 @@ export const scopes = [
 	'user-read-private',
 	'user-read-playback-state',
 	'user-read-currently-playing',
+	'user-modify-playback-state',
 	'playlist-read-private',
 	'playlist-read-collaborative'
 ].join(' ');
