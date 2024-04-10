@@ -4,6 +4,7 @@
 	import { createInfiniteQuery } from '@tanstack/svelte-query';
 	import { fly } from 'svelte/transition';
 	import PlaylistRow from './PlaylistRow.svelte';
+	import SavedTracksRow from './SavedTracksRow.svelte';
 
 	const limit = 50;
 	const userPlaylistsQuery = createInfiniteQuery({
@@ -21,15 +22,21 @@
 </script>
 
 <div class="text-white/70 mb-2">// PLAYLISTS</div>
+
 {#if $userPlaylistsQuery.isLoading}
 	<p>Loading...</p>
 {:else if $userPlaylistsQuery.isError}
 	<p>Error: {$userPlaylistsQuery.error.message}</p>
 {:else if $userPlaylistsQuery.isSuccess && $userPlaylistsQuery.data}
+	<!-- Saved tracks -->
+	<div in:fly|global={{ y: 10 }}>
+		<SavedTracksRow />
+	</div>
+
 	{#each $userPlaylistsQuery.data.pages as page}
 		{#if page}
 			{#each page.items as playlist, i (playlist.id)}
-				<div in:fly|global={{ y: 10, delay: 10 * i }}>
+				<div in:fly|global={{ y: 10, delay: 10 * (i + 1) }}>
 					<PlaylistRow id={playlist.id} name={playlist.name} playlistContextUri={playlist.uri} />
 				</div>
 			{/each}

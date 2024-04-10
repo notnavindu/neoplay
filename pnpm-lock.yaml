@@ -85,6 +85,9 @@ devDependencies:
   svelte-check:
     specifier: ^3.6.0
     version: 3.6.9(postcss@8.4.38)(svelte@4.2.12)
+  tailwind-scrollbar-hide:
+    specifier: ^1.1.7
+    version: 1.1.7
   tailwindcss:
     specifier: ^3.4.3
     version: 3.4.3
@@ -2578,6 +2581,10 @@ packages:
       locate-character: 3.0.0
       magic-string: 0.30.8
       periscopic: 3.1.0
+
+  /tailwind-scrollbar-hide@1.1.7:
+    resolution: {integrity: sha512-X324n9OtpTmOMqEgDUEA/RgLrNfBF/jwJdctaPZDzB3mppxJk7TLIDmOreEDm1Bq4R9LSPu4Epf8VSdovNU+iA==}
+    dev: true
 
   /tailwindcss@3.4.3:
     resolution: {integrity: sha512-U7sxQk/n397Bmx4JHbJx/iSOOv5G+II3f1kpLpY2QeUv5DcPdcTsYLlusZfq1NthHS1c1cZoyFmmkex1rzke0A==}

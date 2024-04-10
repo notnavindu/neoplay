@@ -23,3 +23,7 @@ body {
 		background-position-x: 0%;
 	}
 }
+
+* {
+	@apply scrollbar-hide;
+}
