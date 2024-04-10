@@ -67,8 +67,8 @@
 			{#if $analysisQuery.data?.segments}
 				{#each $analysisQuery.data?.segments as segment, i}
 					<div
-						class="h-full"
-						style="background-color: #4891ff; 
+						class="h-full bg-blend-multiply"
+						style="background-color: #ff0000; 
                             width: {getWidth(segment.duration * 1000)}px;
                             opacity: {normalizedLoudness[i]};"
 					></div>

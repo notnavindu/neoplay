@@ -91,7 +91,7 @@
 	.dots {
 		--dot-bg: #02060d;
 		--dot-color: #4891ff;
-		--dot-size: 1px;
+		--dot-size: 2px;
 		--dot-space: 8px;
 		background:
 			linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%)
