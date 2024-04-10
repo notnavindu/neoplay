@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { SECTION_COLORS } from '$lib/constants/colors.const';
 	import { QUERY_KEYS } from '$lib/constants/query.const';
 	import { spotifyPlaybackState, spotifySdk } from '$lib/stores/spotify.store';
 	import { currentTrack } from '$lib/stores/track.store';
@@ -7,7 +6,6 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { fly } from 'svelte/transition';
 
-	let container: HTMLDivElement | undefined;
 	let normalizedLoudness: number[] = [];
 
 	const analysisQuery = createQuery({
@@ -15,16 +13,9 @@
 		queryFn: () => $spotifySdk?.tracks.audioAnalysis($currentTrack!.id as string)
 	});
 
-	const getSectionColor = (index: number) => {
-		return SECTION_COLORS[index % SECTION_COLORS.length!];
-	};
-
 	const getWidth = (sectionDurationMs: number) => {
-		if (!container) return 0;
-		const { width } = container.getBoundingClientRect();
 		const percent = sectionDurationMs / duration;
-		const sectionWidth = width * percent;
-		return sectionWidth;
+		return percent * 100;
 	};
 
 	const normalizeLoudness = (sections: Section[]) => {
@@ -63,26 +54,21 @@
 	}
 </script>
 
-<div
-	class="w-full h-full absolute inset-0 z-10 flex divide-x divide-neo-blue/70"
-	bind:this={container}
->
-	{#if container}
-		{#if $analysisQuery.isLoading}
-			<p>Loading...</p>
-		{:else if $analysisQuery.isError}
-			<p>Error: {$analysisQuery.error.message}</p>
-		{:else if $analysisQuery.isSuccess}
-			{#if $analysisQuery.data?.sections}
-				{#each $analysisQuery.data?.sections as section, i (i)}
-					<div
-						in:fly|global={{ x: 30, delay: 50 * i }}
-						class="h-full dots"
-						style="width: {getWidth(section.duration * 1000)}px;
+<div class="w-full h-full absolute inset-0 z-10 flex divide-x divide-neo-blue/70">
+	{#if $analysisQuery.isLoading}
+		<p>Loading...</p>
+	{:else if $analysisQuery.isError}
+		<p>Error: {$analysisQuery.error.message}</p>
+	{:else if $analysisQuery.isSuccess}
+		{#if $analysisQuery.data?.sections}
+			{#each $analysisQuery.data?.sections as section, i (i)}
+				<div
+					in:fly|global={{ x: 30, delay: 50 * i }}
+					class="h-full dots"
+					style="width: {getWidth(section.duration * 1000)}%;
                                 opacity: {normalizedLoudness[i]};"
-					></div>
-				{/each}
-			{/if}
+				></div>
+			{/each}
 		{/if}
 	{/if}
 </div>
