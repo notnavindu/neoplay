@@ -4,8 +4,10 @@
 	import Sidebar from '$lib/components/common/sidebar.svelte';
 	import BottomBar from '$lib/components/layout/BottomBar.svelte';
 	import WebPlayerListener from '$lib/components/listeners/WebPlayerListener.svelte';
+	import CurrentTrack from '$lib/components/ui/CurrentTrack.svelte';
 	import { auth } from '$lib/stores/auth.store';
 	import { spotifyPlayerReady } from '$lib/stores/spotify.store';
+	import { currentTrack } from '$lib/stores/track.store';
 	import { leftSidebarOpen } from '$lib/stores/ui.store';
 
 	if (!$auth.isLoggedIn) goto('/');
@@ -32,6 +34,10 @@
 
 	<div class="w-full flex flex-col justify-between">
 		<div class="p-4 relative">
+			{#if $currentTrack}
+				<CurrentTrack />
+			{/if}
+
 			<slot />
 		</div>
 
