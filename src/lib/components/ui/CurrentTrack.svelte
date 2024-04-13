@@ -11,7 +11,7 @@
 	<div>No Track</div>
 {:else}
 	{#key $currentTrack.id}
-		<div class="flex gap-8">
+		<div class="flex gap-8 flex-col md:flex-row">
 			<div class="w-64 h-64">
 				<div class="bg-white/5" in:fly={{ y: 30 }}>
 					<img src={$currentTrack?.album.images[0].url} alt="Album art for {$currentTrack?.name}" />
