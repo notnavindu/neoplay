@@ -2,7 +2,9 @@
 	import { page } from '$app/stores';
 </script>
 
-<div class="w-full h-12 border-t border-neo-gray-1 flex items-center justify-between">
+<div
+	class="w-full h-12 flex-shrink-0 border-t border-neo-gray-1 flex items-center justify-between absolute bottom-0 bg-neo-black"
+>
 	<div class="h-full flex">
 		<a
 			class:bg-neo-blue={$page.route.id === '/main'}

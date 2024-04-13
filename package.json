@@ -18,6 +18,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@tauri-apps/cli": "2.0.0-beta.11",
 		"@types/eslint": "^8.56.0",
+		"@types/lodash": "^4.17.0",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
 		"autoprefixer": "^10.4.19",
@@ -45,6 +46,7 @@
 		"@types/spotify-web-playback-sdk": "^0.1.19",
 		"axios": "^1.6.8",
 		"dayjs": "^1.11.10",
+		"lodash": "^4.17.21",
 		"svelte-french-toast": "^1.2.0"
 	}
 }

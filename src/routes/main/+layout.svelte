@@ -32,8 +32,8 @@
 		</button>
 	{/if}
 
-	<div class="w-full flex flex-col justify-between">
-		<div class="p-4 relative">
+	<div class="w-full flex flex-col justify-between relative">
+		<div class="p-4 relative h-full">
 			{#if $currentTrack}
 				<CurrentTrack />
 			{/if}
