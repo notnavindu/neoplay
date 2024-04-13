@@ -21,10 +21,14 @@
 		</div>
 	{/if}
 
-	<button
-		class="absolute top-4 bg-neo-blue p-2 z-40"
-		on:click={() => ($leftSidebarOpen = !$leftSidebarOpen)}>OPEN</button
-	>
+	{#if !$leftSidebarOpen}
+		<button
+			class="absolute top-[6px] bg-neo-blue z-40 h-fit px-2 py-1 leading-1"
+			on:click={() => ($leftSidebarOpen = !$leftSidebarOpen)}
+		>
+			→
+		</button>
+	{/if}
 
 	<div class="w-full flex flex-col justify-between">
 		<div class="p-4 relative">
