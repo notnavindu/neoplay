@@ -59,8 +59,10 @@
 								on:click={() => handleTrackClick(track.uri)}
 								class="flex gap-2 items-center hover:bg-white/10 text-left p-1"
 							>
-								<div class="aspect-square flex-shrink-0 bg-white/30">
-									<img src={track.album.images[0].url} alt={track.name} class="size-10" />
+								<div class="aspect-square flex-shrink-0 bg-white/30 size-10">
+									{#if track.album.images.length > 0}
+										<img src={track.album.images[0].url} alt={track.name} class="size-10" />
+									{/if}
 								</div>
 								<div class="flex flex-col">
 									<div class="line-clamp-2">{track.name}</div>
@@ -83,8 +85,10 @@
 								on:click={() => toast.error('Not implemented yet')}
 								class="flex gap-2 items-center hover:bg-white/10 text-left p-1"
 							>
-								<div class="aspect-square flex-shrink-0">
-									<img src={artist.images[0].url} alt={artist.name} class="size-10" />
+								<div class="aspect-square flex-shrink-0 bg-white/30 size-10">
+									{#if artist.images.length > 0}
+										<img src={artist.images[0].url} alt={artist.name} class="size-10" />
+									{/if}
 								</div>
 								<div class="flex flex-col">
 									<div class="line-clamp-2">{artist.name}</div>

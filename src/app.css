@@ -13,7 +13,7 @@ body {
 	animation: shimmer 1s infinite linear;
 }
 .shimmer-bg-white {
-	background: linear-gradient(-45deg, #5e5e5e 40%, #ffffffb3 50%, #5e5e5e 60%);
+	background: linear-gradient(-45deg, #5e5e5e 40%, #ffffff81 50%, #5e5e5e 60%);
 	background-size: 300%;
 	background-position-x: 100%;
 	animation: shimmer 1s infinite linear;
