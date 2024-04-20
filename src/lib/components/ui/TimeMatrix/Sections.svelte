@@ -4,7 +4,7 @@
 	import { currentTrack } from '$lib/stores/track.store';
 	import type { Section } from '@spotify/web-api-ts-sdk';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { fly } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 
 	let normalizedLoudness: number[] = [];
 
@@ -54,9 +54,11 @@
 	}
 </script>
 
-<div class="w-full h-full absolute inset-0 z-10 flex divide-x divide-neo-blue/70">
+<div class="w-full h-full absolute inset-0 z-10 flex divide-x divide-neo-white/70">
+	<div class="absolute w-full h-full z-20 bg-gradient-to-b from-neo-black to-transparent"></div>
+
 	{#if $analysisQuery.isLoading}
-		<p>Loading...</p>
+		<div transition:fade class="w-full h-full shimmer-bg-white"></div>
 	{:else if $analysisQuery.isError}
 		<p>Error: {$analysisQuery.error.message}</p>
 	{:else if $analysisQuery.isSuccess}
@@ -77,8 +79,8 @@
 	.dots {
 		--dot-bg: #02060d;
 		--dot-color: #4891ff;
-		--dot-size: 2px;
-		--dot-space: 8px;
+		--dot-size: 3px;
+		--dot-space: 6px;
 		background:
 			linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%)
 				center / var(--dot-space) var(--dot-space),
