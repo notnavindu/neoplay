@@ -11,6 +11,6 @@
 	</button>
 
 	{#if open}
-		<SavedTracksList {open}></SavedTracksList>
+		<SavedTracksList on:track-info:mouseleave {open}></SavedTracksList>
 	{/if}
 </div>

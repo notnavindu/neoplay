@@ -1,6 +1,8 @@
 <script>
+	import { trackInfoWindow } from '$lib/stores/track-info-window.store';
 	import { leftSidebarOpen } from '$lib/stores/ui.store';
 	import PlayingDevice from '../ui/PlayingDevice.svelte';
+	import TrackInfoPopup from '../ui/TrackInfoPopup.svelte';
 	import UserPlaylists from '../ui/UserPlaylists.svelte';
 	import Queue from './queue.svelte';
 </script>
@@ -15,10 +17,19 @@
 		>
 	</div>
 
-	<div class="flex-grow overflow-scroll border-b border-neo-gray-1 p-4">
+	<div
+		class="w-64 flex-grow overflow-y-scroll border-b border-neo-gray-1 border p-4"
+		on:scroll={() => {
+			console.log('sdf');
+		}}
+	>
 		<UserPlaylists />
 	</div>
 
 	<Queue />
 	<PlayingDevice />
+
+	{#if $trackInfoWindow.x && $trackInfoWindow.y}
+		<TrackInfoPopup />
+	{/if}
 </div>

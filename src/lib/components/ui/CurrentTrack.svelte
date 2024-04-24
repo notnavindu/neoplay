@@ -45,7 +45,7 @@
 
 					<!-- Svelte Type Error if you remove this -->
 					{#if $currentTrack.id && expanded}
-						<div class="h-32" transition:slide|global={{ axis: 'y' }}>
+						<div class="h-32" transition:slide={{ axis: 'y' }}>
 							<!-- TODO: Move to tan stack query -->
 							{#await $spotifySdk?.tracks.audioFeatures($currentTrack.id)}
 								{#each { length: 8 } as _}

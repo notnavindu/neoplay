@@ -65,7 +65,7 @@
 		{#if $analysisQuery.data?.sections}
 			{#each $analysisQuery.data?.sections as section, i (i)}
 				<div
-					in:fly|global={{ x: 30, delay: 50 * i }}
+					in:fly|global={{ x: 30, delay: 50 * i + 400 }}
 					class="h-full dots"
 					style="width: {getWidth(section.duration * 1000)}%;
                                 opacity: {normalizedLoudness[i]};"
