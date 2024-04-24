@@ -1,7 +1,7 @@
 {
 	"productName": "neoplay",
 	"version": "0.1.0",
-	"identifier": "com.tauri.dev",
+	"identifier": "com.neoplay.dev",
 	"build": {
 		"frontendDist": "../build",
 		"devUrl": "http://localhost:5173",
