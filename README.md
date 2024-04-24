@@ -1,5 +1,7 @@
 # neoplay
 
+![neoplay](https://socialify.git.ci/notnavindu/neoplay/image?description=1&descriptionEditable=A%20Lightweight%20Spotify%20Player%20for%20Developers%20&font=Inter&forks=1&issues=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Fnotnavindu%2Fneoplay%2Fmain%2Fstatic%2Flogo.svg&name=1&pattern=Plus&pulls=1&stargazers=1&theme=Dark)
+
 <a name="readme-top"></a>
 
 <!-- TABLE OF CONTENTS -->
