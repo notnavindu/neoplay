@@ -5,7 +5,7 @@
 	import { trackInfoWindow } from '$lib/stores/track-info-window.store';
 	import type { Track } from '@spotify/web-api-ts-sdk';
 	import { createInfiniteQuery } from '@tanstack/svelte-query';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 
 	export let open: boolean;
@@ -13,7 +13,6 @@
 	let userUri: string;
 
 	const limit = 30;
-	const dispatch = createEventDispatcher();
 
 	const tracksInPlaylistQuery = createInfiniteQuery({
 		queryKey: [QUERY_KEYS.USER_SAVED_TRACKS],
