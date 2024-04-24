@@ -1,3 +1,11 @@
 {
-	"conventionalCommits.scopes": ["auth", "player", "queue", "time-matrix", "playlists", "search"]
+	"conventionalCommits.scopes": [
+		"auth",
+		"player",
+		"queue",
+		"time-matrix",
+		"playlists",
+		"search",
+		"sidebar"
+	]
 }

@@ -2,6 +2,8 @@
 	import { switchPlaylist } from '$lib/actions/player.actions';
 	import { QUERY_KEYS } from '$lib/constants/query.const';
 	import { spotifySdk } from '$lib/stores/spotify.store';
+	import { trackInfoWindow } from '$lib/stores/track-info-window.store';
+	import type { Track } from '@spotify/web-api-ts-sdk';
 	import { createInfiniteQuery } from '@tanstack/svelte-query';
 	import { fly } from 'svelte/transition';
 
@@ -10,6 +12,23 @@
 	export let playlistContextUri: string;
 
 	const limit = 30;
+
+	const handleMouseEnter = (e: MouseEvent, track: Track) => {
+		const element = e.target as HTMLElement;
+
+		const boundingBox = element.getBoundingClientRect();
+		trackInfoWindow.open({
+			source: 'trigger',
+			track: track,
+			triggeredTrackId: track.id,
+			x: boundingBox.left,
+			y: boundingBox.top
+		});
+	};
+
+	const handleMouseLeave = (track: Track) => {
+		trackInfoWindow.close(track.id);
+	};
 
 	const tracksInPlaylistQuery = createInfiniteQuery({
 		queryKey: [QUERY_KEYS.USER_PLAYLISTS, id],
@@ -42,13 +61,23 @@
 			{#each $tracksInPlaylistQuery.data.pages as page}
 				{#if page?.items}
 					{#each page.items as item, i (item.track.id)}
-						<button
-							on:click={() => switchPlaylist(playlistContextUri, item.track.uri)}
-							in:fly|global={{ y: 10, delay: 10 * i }}
-							class="overflow-hidden whitespace-nowrap text-ellipsis text-left block w-full"
-						>
-							♪ {item.track.name}
-						</button>
+						<div class="w-full flex justify-between" in:fly|global={{ y: 10, delay: 10 * i }}>
+							<button
+								on:click={() => switchPlaylist(playlistContextUri, item.track.uri)}
+								class="overflow-hidden whitespace-nowrap text-ellipsis text-left block w-full"
+							>
+								♪ {item.track.name}
+							</button>
+
+							<!-- svelte-ignore a11y-no-static-element-interactions -->
+							<div
+								on:mouseenter={(e) => handleMouseEnter(e, item.track)}
+								on:mouseleave={() => handleMouseLeave(item.track)}
+								class="px-1 cursor-pointer"
+							>
+								▹
+							</div>
+						</div>
 					{/each}
 				{/if}
 			{/each}
