@@ -42,6 +42,8 @@ neoplay is an open source, small weekend project aimed at creating a Spotify pla
 2. Must be themed for developers (Based on [Neofetch](https://github.com/dylanaraps/neofetch) and [VSCode](https://code.visualstudio.com/))
 3. Must look cool
 
+Disclaimer: This project is very new and if you stumble upon any bugs, please to create an issue for it. :)
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Tech Stack
