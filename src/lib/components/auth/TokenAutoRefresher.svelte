@@ -9,20 +9,25 @@
 	import { spotifySdk } from '$lib/stores/spotify.store';
 	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
 	import { onDestroy } from 'svelte';
+	import toast from 'svelte-french-toast';
 
 	const loop = setInterval(
 		async () => {
 			const { accessToken, clientId } = getSavedAccessToken();
-			if (!accessToken || !clientId) return console.log('Handle error');
+			if (!accessToken || !clientId) {
+				toast.error("Couldn't refresh token. Please log in again.", {
+					duration: 5000
+				});
+				localStorage.clear();
+				return;
+			}
 
 			console.log('Saving token...');
 
 			refreshAccessToken(clientId, accessToken.refresh_token).then(async (newToken) => {
-				console.log('NEWW', newToken);
 				const sdk = SpotifyApi.withAccessToken(clientId, newToken);
 
 				const me = await sdk.currentUser.profile();
-				console.log('🚀 ~ refreshAccessToken ~ me2:', me);
 
 				if (!me) {
 					localStorage.removeItem(storageKeys.accessToken);

@@ -17,12 +17,7 @@
 		>
 	</div>
 
-	<div
-		class="w-64 flex-grow overflow-y-scroll border-b border-neo-gray-1 border p-4"
-		on:scroll={() => {
-			console.log('sdf');
-		}}
-	>
+	<div class="w-64 flex-grow overflow-y-scroll border-b border-neo-gray-1 border p-4">
 		<UserPlaylists />
 	</div>
 

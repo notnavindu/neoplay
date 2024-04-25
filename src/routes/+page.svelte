@@ -16,8 +16,13 @@
 	<CliRow>Hello!</CliRow>
 	<CliRow>Let's get you setup.</CliRow>
 	<CliRow>
-		<a href="https://github.com/" target="_blank" class="text-neo-blue underline"> Click Here </a> to
-		view the setup instructions
+		<a
+			href="https://github.com/notnavindu/neoplay?tab=readme-ov-file#spotify-account-setup"
+			target="_blank"
+			class="text-neo-blue underline"
+		>
+			Click Here
+		</a> to view the Spotify account setup instructions
 	</CliRow>
 
 	<CliRow>Come back here when you're ready!</CliRow>

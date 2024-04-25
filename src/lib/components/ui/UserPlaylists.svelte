@@ -21,11 +21,7 @@
 	});
 </script>
 
-<div
-	on:scroll={() => {
-		console.log('remove');
-	}}
->
+<div>
 	<div class="text-white/70 mb-2">// PLAYLISTS</div>
 
 	{#if $userPlaylistsQuery.isLoading}

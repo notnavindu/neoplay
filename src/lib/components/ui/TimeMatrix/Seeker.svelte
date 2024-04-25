@@ -17,8 +17,6 @@
 	$: paused = $spotifyPlaybackState?.paused;
 
 	const resume = () => {
-		console.log('🚀 ~ resume ~ resume:');
-
 		loop = setInterval(() => {
 			if (position < duration) {
 				position += 1000;
@@ -28,8 +26,6 @@
 	};
 
 	const pause = () => {
-		console.log('🚀 ~ pause ~ pause:');
-
 		clearInterval(loop);
 	};
 

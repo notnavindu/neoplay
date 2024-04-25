@@ -5,15 +5,18 @@
 
 	let current: TrackItem | null | undefined;
 	let queue: TrackItem[] = [];
+	let loading = true;
 
 	const getQueue = async () => {
 		let res = await $spotifySdk?.player.getUsersQueue();
 		current = res?.currently_playing;
 		queue = res?.queue ?? [];
+		loading = false;
 	};
 
 	$: {
 		if ($spotifyPlaybackState) getQueue();
+		else loading = false;
 	}
 </script>
 
@@ -30,17 +33,20 @@
 					♪ {current.name}
 				</div>
 			{/if}
-			{#each queue as track, i (`${track.id} ${i}`)}
-				<div class="opacity-75" in:fly={{ y: 10, delay: 100 * i }}>
-					♪ {track.name}
-				</div>
+
+			{#if loading}
+				<div class="w-full h-3 shimmer-bg"></div>
+				<div class="w-full h-3 shimmer-bg"></div>
+				<div class="w-full h-3 shimmer-bg"></div>
+				<div class="w-full h-3 shimmer-bg"></div>
+				<div class="w-full h-3 shimmer-bg"></div>
 			{:else}
-				<div class="w-full h-3 shimmer-bg"></div>
-				<div class="w-full h-3 shimmer-bg"></div>
-				<div class="w-full h-3 shimmer-bg"></div>
-				<div class="w-full h-3 shimmer-bg"></div>
-				<div class="w-full h-3 shimmer-bg"></div>
-			{/each}
+				{#each queue as track, i (`${track.id} ${i}`)}
+					<div class="opacity-75" in:fly={{ y: 10, delay: 100 * i }}>
+						♪ {track.name}
+					</div>
+				{/each}
+			{/if}
 		</div>
 	</div>
 </div>

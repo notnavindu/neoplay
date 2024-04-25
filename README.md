@@ -34,12 +34,12 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![alt text](docs/screenshots/home.png)
 
 neoplay is an open source, small weekend project aimed at creating a Spotify player with the following goals in mind.
 
-1. Must be lightweight in terms of memory and CPU usage
-2. Must be themed for developers
+1. Must be lightweight (Memory and CPU usage)
+2. Must be themed for developers (Based on [Neofetch](https://github.com/dylanaraps/neofetch) and [VSCode](https://code.visualstudio.com/))
 3. Must look cool
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -115,9 +115,15 @@ After running the downloaded binary, follow the on-screen instructions.
 ### Spotify Account Setup
 
 1. Log into [Spotify Developer Dashboard](https://developer.spotify.com/)
-2. [Create an app](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app) from the dashboard
+2. [Create an app](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app) from the dashboard and use the following settings:
+   1. `App Name`: Neoplay
+   2. `App Description`: Anything you like
+   3. `Redirect URI (*Important)`: http://localhost:5177/callback
+   4. `Which API/SDKs are you planning to use (*Important)`: Be sure to enable `Web API` and `Web Playback SDK`
 3. Go to the `Settings` page in your newly created app.
 4. You will see your `clientID` and `clientSecret`. These values will be required to log into neoplay.
+
+![create-app example](docs/screenshots/create-app.png)
 
 <!-- CONTRIBUTING -->
 
@@ -133,6 +139,14 @@ Don't forget to give the project a star! Thanks again!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- BENCHMARKS -->
+
+## Benchmarks
+
+TODO.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

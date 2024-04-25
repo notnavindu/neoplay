@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { SECTION_COLORS } from '$lib/constants/colors.const';
 	import { QUERY_KEYS } from '$lib/constants/query.const';
 	import { spotifyPlaybackState, spotifySdk } from '$lib/stores/spotify.store';
 	import { currentTrack } from '$lib/stores/track.store';
@@ -13,10 +12,6 @@
 		queryKey: [QUERY_KEYS.TRACK_ANALYSIS, $currentTrack!.id],
 		queryFn: () => $spotifySdk?.tracks.audioAnalysis($currentTrack!.id as string)
 	});
-
-	const getSectionColor = (index: number) => {
-		return SECTION_COLORS[index % SECTION_COLORS.length!];
-	};
 
 	const getWidth = (sectionDurationMs: number) => {
 		if (!container) return 0;
@@ -52,7 +47,6 @@
 	$: {
 		if ($analysisQuery.data?.segments) {
 			normalizedLoudness = normalizeLoudness($analysisQuery.data?.segments);
-			console.log('🚀 ~ normalizedLoudness:', normalizedLoudness);
 		}
 	}
 </script>
