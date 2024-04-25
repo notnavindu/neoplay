@@ -34,12 +34,12 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![alt text](docs/screenshots/home.png)
 
 neoplay is an open source, small weekend project aimed at creating a Spotify player with the following goals in mind.
 
-1. Must be lightweight in terms of memory and CPU usage
-2. Must be themed for developers
+1. Must be lightweight (Memory and CPU usage)
+2. Must be themed for developers (Based on [Neofetch](https://github.com/dylanaraps/neofetch) and [VSCode](https://code.visualstudio.com/))
 3. Must look cool
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
