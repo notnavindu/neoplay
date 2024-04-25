@@ -115,9 +115,15 @@ After running the downloaded binary, follow the on-screen instructions.
 ### Spotify Account Setup
 
 1. Log into [Spotify Developer Dashboard](https://developer.spotify.com/)
-2. [Create an app](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app) from the dashboard
+2. [Create an app](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app) from the dashboard and use the following settings:
+   1. `App Name`: Neoplay
+   2. `App Description`: Anything you like
+   3. `Redirect URI (*Important)`: http://localhost:5177/callback
+   4. `Which API/SDKs are you planning to use (*Important)`: Be sure to enable `Web API` and `Web Playback SDK`
 3. Go to the `Settings` page in your newly created app.
 4. You will see your `clientID` and `clientSecret`. These values will be required to log into neoplay.
+
+![create-app example](docs/screenshots/create-app.png)
 
 <!-- CONTRIBUTING -->
 
