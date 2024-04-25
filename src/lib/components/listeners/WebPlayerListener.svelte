@@ -8,51 +8,40 @@
 	} from '$lib/stores/spotify.store';
 	import { currentTrack } from '$lib/stores/track.store';
 	import { onDestroy, onMount } from 'svelte';
+	import toast from 'svelte-french-toast';
 
 	let preventDupes = false;
 
 	const onPlayerReady: Spotify.PlaybackInstanceListener = ({ device_id }) => {
-		console.log('Ready: ', device_id);
 		$spotifyPlayerReady = true;
 		$spotifyDeviceId = device_id;
 	};
 
 	const onPlayerNotReady: Spotify.PlaybackInstanceListener = ({ device_id }) => {
-		console.log('Not Ready: ', device_id);
 		$spotifyPlayerReady = false;
 	};
 
 	const onPlayerStateChanged: Spotify.PlaybackStateListener = (state) => {
-		console.log('🚀 ~ player.addListener ~ state:', state);
 		if (!state) return;
 
-		// console.log('🚀 ~ Track equality: ', $currentTrack?.id, state?.track_window?.current_track.id);
 		if ($currentTrack?.id !== state?.track_window?.current_track.id) {
-			console.log('UPDATING TRACK');
 			currentTrack.set(state?.track_window?.current_track ?? null);
 		}
 
-		console.log('🚀 ~ player.getCurrentState ~ isPaused:', state?.paused);
 		spotifyPlaybackState.set(state);
 	};
 
 	const onPlayerError: Spotify.ErrorListener = (err) => {
-		console.log(err);
+		toast.error(err.message);
 	};
 
 	onMount(async () => {
-		console.log('ON MOUNT');
-
 		if ($spotifyPlayer || preventDupes) return;
 		window.onSpotifyWebPlaybackSDKReady = () => {
 			preventDupes = true;
-			console.log('OnSpotifyWebPly');
 			const player = new Spotify.Player({
 				getOAuthToken: async (cb) => {
-					console.log('GET OAUT');
-
 					const token = await $spotifySdk?.getAccessToken();
-					console.log('🚀 ~ getOAuthToken: ~ token:', token);
 					cb(token?.access_token as string);
 				},
 				name: 'Neoplay',

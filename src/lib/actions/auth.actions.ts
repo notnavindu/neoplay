@@ -33,13 +33,10 @@ export const refreshAccessToken = async (client_id: string, refresh_token: strin
 
 export const getSavedAccessToken = () => {
 	const accessTokenRaw = localStorage.getItem(storageKeys.accessToken) as string;
-	console.log('🚀 ~ getSavedAccessToken ~ accessTokenRaw:', accessTokenRaw);
 	const clientId = localStorage.getItem(storageKeys.clientId) as string;
-	console.log('🚀 ~ getSavedAccessToken ~ clientId:', clientId);
 
 	if (!accessTokenRaw || !clientId) return { accessToken: null, clientId: null };
 
 	const accessTokenParsed = JSON.parse(accessTokenRaw) as SpotifyAccessTokenResponse;
-	console.log('🚀 ~ getSavedAccessToken ~ accessTokenParsed:', accessTokenParsed);
 	return { accessToken: accessTokenParsed, clientId };
 };

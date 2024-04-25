@@ -1,20 +1,18 @@
 <script lang="ts">
+	import { getAccessToken, saveSpotifyAccessTokenResponse } from '$lib/actions/auth.actions';
 	import CommandInputRow from '$lib/components/auth/CommandInputRow.svelte';
 	import { storageKeys } from '$lib/constants/storage.const';
-	import { createEventDispatcher, onMount } from 'svelte';
-	import CliRow from '../CliRow.svelte';
-	import { slide } from 'svelte/transition';
+	import { auth } from '$lib/stores/auth.store';
+	import { spotifySdk } from '$lib/stores/spotify.store';
 	import {
 		base64encode,
 		generateRandomString,
 		getAuthorizeUrl,
 		sha256
 	} from '$lib/utils/auth.utils';
-	import { open } from '@tauri-apps/plugin-shell';
-	import { getAccessToken, saveSpotifyAccessTokenResponse } from '$lib/actions/auth.actions';
-	import { auth } from '$lib/stores/auth.store';
 	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
-	import { spotifySdk } from '$lib/stores/spotify.store';
+	import { open } from '@tauri-apps/plugin-shell';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	const dispatch = createEventDispatcher<OnboardingStepDispatcher>();
 
@@ -70,7 +68,6 @@
 				});
 
 			const response = await getAccessToken(clientId, code, codeVerifier);
-			console.log('🚀 ~ handleEnterPress ~ response:', response);
 
 			saveSpotifyAccessTokenResponse(response);
 			const sdk = await SpotifyApi.withAccessToken(clientId, response);
