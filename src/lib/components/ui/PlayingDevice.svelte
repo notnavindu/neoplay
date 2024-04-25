@@ -19,7 +19,6 @@
 				<div>// NO ACTIVE DEVICE</div>
 			{/if}
 
-			{activeDevice?.id}
 			{#if $spotifyDeviceId !== activeDevice?.id}
 				<DeviceDisconnectedModal />
 			{/if}

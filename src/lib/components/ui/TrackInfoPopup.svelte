@@ -4,6 +4,8 @@
 	import { trackInfoWindow } from '$lib/stores/track-info-window.store';
 	import { createQuery } from '@tanstack/svelte-query';
 
+	let addToQueueLoading = false;
+
 	const handleMouseEnter = () => {
 		trackInfoWindow.keepOpen();
 	};
@@ -13,7 +15,9 @@
 	};
 
 	const handleAddToQueue = async () => {
+		addToQueueLoading = true;
 		await $spotifySdk?.player.addItemToPlaybackQueue($trackInfoWindow.track!.uri);
+		addToQueueLoading = false;
 	};
 
 	$: songInfoQuery = createQuery({
@@ -57,9 +61,10 @@
 			<div class=" text-white text-base">{$songInfoQuery.data.name}</div>
 			<div>{$songInfoQuery.data.artists[0].name}</div>
 			<div class="text-white/40 mt-1">({$songInfoQuery.data.album.name})</div>
-			<div class="w-full flex justify-between">
-				<button on:click={handleAddToQueue}>add to queue</button>
-			</div>
+
+			<button class="ml-auto" disabled={addToQueueLoading} on:click={handleAddToQueue}
+				>add to queue</button
+			>
 		</div>
 	{/if}
 </div>
