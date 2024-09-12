@@ -20,27 +20,50 @@
 	import '../app.css';
 
 	let loading = true;
+	let log: string[] = [];
 
 	onMount(() => {
+		log = [...log, 'onMount'];
 		const { accessToken, clientId } = getSavedAccessToken();
+		log = [...log, 'got access token'];
+
 		if (!accessToken || !clientId) return (loading = false);
 
-		refreshAccessToken(clientId, accessToken.refresh_token).then(async (newToken) => {
-			const sdk = SpotifyApi.withAccessToken(clientId, newToken);
+		log = [...log, 'B'];
 
-			const me = await sdk.currentUser.profile();
+		refreshAccessToken(clientId, accessToken.refresh_token)
+			.then(async (newToken) => {
+				const sdk = SpotifyApi.withAccessToken(clientId, newToken);
 
-			if (!me) {
-				localStorage.removeItem(storageKeys.accessToken);
-				$auth.isLoggedIn = false;
-				return (loading = false);
-			}
+				log = [...log, 'refreshed and got sdk'];
 
-			saveSpotifyAccessTokenResponse(newToken);
-			spotifySdk.set(sdk);
-			$auth.isLoggedIn = true;
-			loading = false;
-		});
+				const me = await sdk.currentUser.profile();
+
+				log = [...log, 'got me'];
+
+				if (!me) {
+					log = [...log, 'no me'];
+
+					localStorage.removeItem(storageKeys.accessToken);
+					$auth.isLoggedIn = false;
+					return (loading = false);
+				}
+				log = [...log, 'has me'];
+
+				saveSpotifyAccessTokenResponse(newToken);
+				log = [...log, 'D'];
+
+				spotifySdk.set(sdk);
+				log = [...log, 'E'];
+
+				$auth.isLoggedIn = true;
+				loading = false;
+				log = [...log, 'F'];
+			})
+			.catch((e) => {
+				log = [...log, 'error', JSON.stringify(e)];
+				loading = false;
+			});
 	});
 
 	const queryClient = new QueryClient({
@@ -64,6 +87,9 @@
 	{#if loading}
 		<div>
 			<div>Loading</div>
+			{#each log as item}
+				<div>{item}</div>
+			{/each}
 		</div>
 	{:else}
 		<main class="bg-neo-black w-full min-h-screen text-white flex text-xs">
