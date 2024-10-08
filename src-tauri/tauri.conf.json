@@ -35,5 +35,13 @@
 		]
 	},
 
+	"plugins": {
+		"deep-link": {
+			"desktop": {
+				"schemes": ["neoplay-dev"]
+			}
+		}
+	},
+
 	"$schema": "../node_modules/@tauri-apps/cli/schema.json"
 }
