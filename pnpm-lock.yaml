@@ -18,8 +18,8 @@ dependencies:
     specifier: 2.0.0-rc.2
     version: 2.0.0-rc.2
   '@tauri-apps/plugin-shell':
-    specifier: 2.0.0-beta.2
-    version: 2.0.0-beta.2
+    specifier: 2.0.0
+    version: 2.0.0
   '@tauri-apps/plugin-stronghold':
     specifier: 2.0.0-beta.2
     version: 2.0.0-beta.2
@@ -692,6 +692,10 @@ packages:
     resolution: {integrity: sha512-UNiIhhKG08j4ooss2oEEVexffmWkgkYlC2M3GcX3VPtNsqFgVNL8Mcw/4Y7rO9M9S+ffAMnLOF5ypzyuyb8tyg==}
     dev: false
 
+  /@tauri-apps/api@2.0.2:
+    resolution: {integrity: sha512-3wSwmG+1kr6WrgAFKK5ijkNFPp8TT3FLj3YHUb5EwMO+3FxX4uWlfSWkeeBy+Kc1RsKzugtYLuuya+98Flj+3w==}
+    dev: false
+
   /@tauri-apps/cli-darwin-arm64@2.0.1:
     resolution: {integrity: sha512-oWjCZoFbm57V0eLEkIbc6aUmB4iW65QF7J8JVh5sNzH4xHGP9rzlQarbkg7LOn89z7mFSZpaLJAWlaaZwoV2Ug==}
     engines: {node: '>= 10'}
@@ -805,10 +809,10 @@ packages:
       '@tauri-apps/api': 2.0.0-rc.4
     dev: false
 
-  /@tauri-apps/plugin-shell@2.0.0-beta.2:
-    resolution: {integrity: sha512-9rWsfN7Wt+EuWmpmNnK8bCs+04fzhEYrHtWyLIAYxb9diFdcJrEoctCP9YM2v+Uf8/y8qFC7VCbZ/9VQHANymQ==}
+  /@tauri-apps/plugin-shell@2.0.0:
+    resolution: {integrity: sha512-OpW2+ycgJLrEoZityWeWYk+6ZWP9VyiAfbO+N/O8VfLkqyOym8kXh7odKDfINx9RAotkSGBtQM4abyKfJDkcUg==}
     dependencies:
-      '@tauri-apps/api': 2.0.0-beta.4
+      '@tauri-apps/api': 2.0.2
     dev: false
 
   /@tauri-apps/plugin-stronghold@2.0.0-beta.2:

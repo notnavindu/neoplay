@@ -7,7 +7,7 @@
 	} from '$lib/actions/auth.actions';
 	import { storageKeys } from '$lib/constants/storage.const';
 	import { ONE_MINUTE_MS } from '$lib/constants/time.const';
-	import { auth } from '$lib/stores/auth.store';
+	import { auth, pendingCallbackUrl } from '$lib/stores/auth.store';
 	import { spotifySdk } from '$lib/stores/spotify.store';
 	import '@fontsource/geist-mono/400.css';
 	import '@fontsource/geist-mono/500.css';
@@ -15,14 +15,23 @@
 	import '@fontsource/geist-mono/700.css';
 	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
+	import { onOpenUrl } from '@tauri-apps/plugin-deep-link';
 	import { onMount } from 'svelte';
 	import { Toaster } from 'svelte-french-toast';
 	import '../app.css';
 
-	let loading = true;
+	let loading = false;
 	let log: string[] = [];
 
-	onMount(() => {
+	const handleDeepLink = (url: string) => {
+		console.log(url);
+		pendingCallbackUrl.set(url);
+		goto('/auth/callback');
+	};
+
+	onMount(async () => {
+		await onOpenUrl((urls) => handleDeepLink(urls[0]));
+
 		log = [...log, 'onMount'];
 		const { accessToken, clientId } = getSavedAccessToken();
 		log = [...log, 'got access token'];
@@ -62,7 +71,6 @@
 			})
 			.catch((e) => {
 				log = [...log, 'error', JSON.stringify(e)];
-				loading = false;
 			});
 	});
 

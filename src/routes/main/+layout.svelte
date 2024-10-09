@@ -13,7 +13,8 @@
 	if (!$auth.isLoggedIn) goto('/');
 </script>
 
-<TokenAutoRefresher />
+<!-- TODO: @Nav -->
+<!-- <TokenAutoRefresher /> -->
 <WebPlayerListener />
 
 {#if $spotifyPlayerReady}

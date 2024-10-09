@@ -20,11 +20,11 @@ export const base64encode = (input: ArrayBuffer) => {
 };
 
 export const getAuthorizeUrl = (clientId: string, codeChallenge: string, state: string) => {
-	let auth_query_parameters = new URLSearchParams({
+	const auth_query_parameters = new URLSearchParams({
 		response_type: 'code',
 		client_id: clientId,
 		scope: scopes,
-		redirect_uri: 'http://localhost:5177/callback',
+		redirect_uri: 'neoplay-dev://callback',
 		state: state,
 		code_challenge_method: 'S256',
 		code_challenge: codeChallenge

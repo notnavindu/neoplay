@@ -13,8 +13,8 @@
 		"core:image:default",
 		"core:menu:default",
 		"core:tray:default",
+		"deep-link:default",
 		"shell:default",
-		"shell:allow-open",
-		"deep-link:default"
+		"shell:allow-open"
 	]
 }
