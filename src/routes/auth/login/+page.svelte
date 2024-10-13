@@ -31,18 +31,27 @@
 	};
 </script>
 
-<div class="p-4 flex flex-col text-sm w-full">
-	<label>
-		Client ID
-		<input class="text-black" bind:value={clientId} type="text" />
-	</label>
+<div class="p-4 flex flex-col text-sm w-full items-center justify-center">
+	<div class="w-full max-w-sm border border-blue-500 p-3 flex flex-col gap-4">
+		<div class="text-blue-500">LOGIN</div>
 
-	<br />
+		<div class="flex items-center gap-2">
+			<input
+				class="text-white p-1 w-full max-w-xs border-b border-blue-500 bg-black outline-none"
+				bind:value={clientId}
+				placeholder="CLIENT ID"
+				type="text"
+			/>
 
-	<label>
-		Client Secret
-		<input type="text" />
-	</label>
+			<a
+				class="p-1"
+				target="_blank"
+				href="https://github.com/notnavindu/neoplay?tab=readme-ov-file#spotify-account-setup">?</a
+			>
+		</div>
 
-	<button class="w-fit mt-3 text-blue-500" on:click={handleAuthenticatePress}>Authenticate</button>
+		<button class="w-fit mt-3 text-white bg-blue-500 py-1 px-2" on:click={handleAuthenticatePress}
+			>Authenticate</button
+		>
+	</div>
 </div>

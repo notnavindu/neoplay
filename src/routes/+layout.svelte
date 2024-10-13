@@ -24,7 +24,6 @@
 	let log: string[] = [];
 
 	const handleDeepLink = (url: string) => {
-		console.log(url);
 		pendingCallbackUrl.set(url);
 		goto('/auth/callback');
 	};

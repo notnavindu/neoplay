@@ -7,7 +7,7 @@ export const getAccessToken = async (client_id: string, code: string, code_verif
 		client_id,
 		code,
 		code_verifier,
-		redirect_uri: 'neoplay-dev://callback'
+		redirect_uri: 'neoplay://callback'
 	});
 
 	return await axios
