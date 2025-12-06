@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { getAccessToken, saveSpotifyAccessTokenResponse } from '$lib/actions/auth.actions';
+	import { getAccessToken } from '$lib/actions/auth.actions';
 	import { storageKeys } from '$lib/constants/storage.const';
 	import { auth, pendingCallbackUrl } from '$lib/stores/auth.store';
-	import { spotifySdk } from '$lib/stores/spotify.store';
-	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
+	import { initializeSpotifySdk } from '$lib/stores/spotify.store';
 	import { onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 
@@ -39,12 +38,16 @@
 
 			const response = await getAccessToken(clientId, code, codeVerifier);
 
-			saveSpotifyAccessTokenResponse(response);
-			const sdk = await SpotifyApi.withAccessToken(clientId, response);
-			spotifySdk.set(sdk);
+			// Use the centralized SDK factory - it handles token storage internally
+			const sdk = initializeSpotifySdk(clientId, response);
+
+			// Validate by fetching user profile
+			await sdk.currentUser.profile();
+
 			$auth.isLoggedIn = true;
-		} catch (error) {
-			console.log(error);
+		} catch (err) {
+			console.error('[Callback] Auth error:', err);
+			error = err instanceof Error ? err.message : 'Authentication failed';
 		} finally {
 			localStorage.removeItem(storageKeys.state);
 			localStorage.removeItem(storageKeys.codeVerifier);

@@ -1,27 +1,22 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import {
-		getSavedAccessToken,
-		refreshAccessToken,
-		saveSpotifyAccessTokenResponse
-	} from '$lib/actions/auth.actions';
+	import { getSavedAccessToken } from '$lib/actions/auth.actions';
 	import { storageKeys } from '$lib/constants/storage.const';
 	import { ONE_MINUTE_MS } from '$lib/constants/time.const';
 	import { auth, pendingCallbackUrl } from '$lib/stores/auth.store';
-	import { spotifySdk } from '$lib/stores/spotify.store';
+	import { clearSpotifySdk, initializeSpotifySdk } from '$lib/stores/spotify.store';
 	import '@fontsource/geist-mono/400.css';
 	import '@fontsource/geist-mono/500.css';
 	import '@fontsource/geist-mono/600.css';
 	import '@fontsource/geist-mono/700.css';
-	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
 	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
 	import { onOpenUrl } from '@tauri-apps/plugin-deep-link';
 	import { onMount } from 'svelte';
 	import { Toaster } from 'svelte-french-toast';
 	import '../app.css';
 
-	let loading = false;
-	let log: string[] = [];
+	let loading = true; // Start as true to prevent flash
+	let initialized = false;
 
 	const handleDeepLink = (url: string) => {
 		pendingCallbackUrl.set(url);
@@ -29,48 +24,39 @@
 	};
 
 	onMount(async () => {
+		// Set up deep link handler first
 		await onOpenUrl((urls) => handleDeepLink(urls[0]));
 
-		log = [...log, 'onMount'];
 		const { accessToken, clientId } = getSavedAccessToken();
-		log = [...log, 'got access token'];
 
-		if (!accessToken || !clientId) return (loading = false);
+		if (!accessToken || !clientId) {
+			loading = false;
+			initialized = true;
+			return;
+		}
 
-		log = [...log, 'B'];
+		try {
+			// Initialize SDK with stored token - the auth strategy handles refresh automatically
+			const sdk = initializeSpotifySdk(clientId, accessToken);
 
-		refreshAccessToken(clientId, accessToken.refresh_token)
-			.then(async (newToken) => {
-				const sdk = SpotifyApi.withAccessToken(clientId, newToken);
+			// Validate the session by fetching the user profile
+			const me = await sdk.currentUser.profile();
 
-				log = [...log, 'refreshed and got sdk'];
+			if (!me) {
+				throw new Error('Failed to get user profile');
+			}
 
-				const me = await sdk.currentUser.profile();
-
-				log = [...log, 'got me'];
-
-				if (!me) {
-					log = [...log, 'no me'];
-
-					localStorage.removeItem(storageKeys.accessToken);
-					$auth.isLoggedIn = false;
-					return (loading = false);
-				}
-				log = [...log, 'has me'];
-
-				saveSpotifyAccessTokenResponse(newToken);
-				log = [...log, 'D'];
-
-				spotifySdk.set(sdk);
-				log = [...log, 'E'];
-
-				$auth.isLoggedIn = true;
-				loading = false;
-				log = [...log, 'F'];
-			})
-			.catch((e) => {
-				log = [...log, 'error', JSON.stringify(e)];
-			});
+			$auth.isLoggedIn = true;
+		} catch (error) {
+			console.error('[Layout] Auth initialization failed:', error);
+			// Clear everything on failure
+			clearSpotifySdk();
+			localStorage.removeItem(storageKeys.accessToken);
+			$auth.isLoggedIn = false;
+		} finally {
+			loading = false;
+			initialized = true;
+		}
 	});
 
 	const queryClient = new QueryClient({
@@ -82,9 +68,13 @@
 		}
 	});
 
-	$: {
-		if ($auth.isLoggedIn) goto('/main');
-		else goto('/');
+	// Only navigate after initialization to prevent race conditions
+	$: if (initialized) {
+		if ($auth.isLoggedIn) {
+			goto('/main');
+		} else {
+			goto('/');
+		}
 	}
 </script>
 
@@ -92,11 +82,8 @@
 	<Toaster />
 
 	{#if loading}
-		<div>
-			<div>Loading</div>
-			{#each log as item}
-				<div>{item}</div>
-			{/each}
+		<div class="flex items-center justify-center w-full min-h-screen bg-neo-black text-white">
+			<div>Loading...</div>
 		</div>
 	{:else}
 		<main class="bg-neo-black w-full min-h-screen text-white flex text-xs">

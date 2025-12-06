@@ -1,10 +1,10 @@
 <script lang="ts">
 	import {
+		getAccessTokenFromStrategy,
 		spotifyDeviceId,
 		spotifyPlaybackState,
 		spotifyPlayer,
-		spotifyPlayerReady,
-		spotifySdk
+		spotifyPlayerReady
 	} from '$lib/stores/spotify.store';
 	import { currentTrack } from '$lib/stores/track.store';
 	import { onDestroy, onMount } from 'svelte';
@@ -41,8 +41,15 @@
 			preventDupes = true;
 			const player = new Spotify.Player({
 				getOAuthToken: async (cb) => {
-					const token = await $spotifySdk?.getAccessToken();
-					cb(token?.access_token as string);
+					// Use the centralized auth strategy to get tokens
+					// This avoids stale closure issues and ensures fresh tokens
+					const token = await getAccessTokenFromStrategy();
+					if (token?.access_token) {
+						cb(token.access_token);
+					} else {
+						console.error('[WebPlayer] No access token available');
+						toast.error('Authentication error. Please log in again.');
+					}
 				},
 				name: 'Neoplay',
 				volume: 0.5

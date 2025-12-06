@@ -1,49 +1,53 @@
 <script lang="ts">
-	import {
-		getSavedAccessToken,
-		refreshAccessToken,
-		saveSpotifyAccessTokenResponse
-	} from '$lib/actions/auth.actions';
 	import { storageKeys } from '$lib/constants/storage.const';
 	import { auth } from '$lib/stores/auth.store';
-	import { spotifySdk } from '$lib/stores/spotify.store';
-	import { SpotifyApi } from '@spotify/web-api-ts-sdk';
-	import { onDestroy } from 'svelte';
+	import { clearSpotifySdk, getSpotifyAuthStrategy } from '$lib/stores/spotify.store';
+	import { onDestroy, onMount } from 'svelte';
 	import toast from 'svelte-french-toast';
 
-	const loop = setInterval(
-		async () => {
-			const { accessToken, clientId } = getSavedAccessToken();
-			if (!accessToken || !clientId) {
-				toast.error("Couldn't refresh token. Please log in again.", {
-					duration: 5000
-				});
-				localStorage.clear();
-				return;
-			}
+	// Refresh every 20 minutes (token expires in 1 hour, 5 min buffer in strategy)
+	const REFRESH_INTERVAL_MS = 1000 * 60 * 20;
 
-			console.log('Saving token...');
+	let intervalId: ReturnType<typeof setInterval> | null = null;
 
-			refreshAccessToken(clientId, accessToken.refresh_token).then(async (newToken) => {
-				const sdk = SpotifyApi.withAccessToken(clientId, newToken);
+	const refreshToken = async () => {
+		const strategy = getSpotifyAuthStrategy();
 
-				const me = await sdk.currentUser.profile();
+		if (!strategy) {
+			console.warn('[TokenAutoRefresher] No auth strategy found');
+			return;
+		}
 
-				if (!me) {
-					localStorage.removeItem(storageKeys.accessToken);
-					$auth.isLoggedIn = false;
-					return;
-				}
+		try {
+			console.log('[TokenAutoRefresher] Forcing token refresh...');
+			await strategy.forceRefresh();
+			console.log('[TokenAutoRefresher] Token refreshed successfully');
+		} catch (error) {
+			console.error('[TokenAutoRefresher] Failed to refresh token:', error);
+			toast.error('Session expired. Please log in again.', { duration: 5000 });
 
-				saveSpotifyAccessTokenResponse(newToken);
-				spotifySdk.set(sdk);
-				$auth.isLoggedIn = true;
-			});
-		},
-		1000 * 60 * 25
-	);
+			// Clear auth state
+			clearSpotifySdk();
+			localStorage.removeItem(storageKeys.accessToken);
+			$auth.isLoggedIn = false;
+		}
+	};
+
+	onMount(() => {
+		// Start the refresh interval
+		intervalId = setInterval(refreshToken, REFRESH_INTERVAL_MS);
+
+		// Also do an immediate check in case we're close to expiry
+		// The strategy will only refresh if needed (within 5 min of expiry)
+		const strategy = getSpotifyAuthStrategy();
+		if (strategy) {
+			strategy.getAccessToken(); // This auto-refreshes if needed
+		}
+	});
 
 	onDestroy(() => {
-		clearInterval(loop);
+		if (intervalId) {
+			clearInterval(intervalId);
+		}
 	});
 </script>

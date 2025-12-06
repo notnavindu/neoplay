@@ -13,8 +13,8 @@
 	if (!$auth.isLoggedIn) goto('/');
 </script>
 
-<!-- TODO: @Nav -->
-<!-- <TokenAutoRefresher /> -->
+<!-- Re-enabled: Token auto-refresh using the centralized auth strategy -->
+<TokenAutoRefresher />
 <WebPlayerListener />
 
 {#if $spotifyPlayerReady}

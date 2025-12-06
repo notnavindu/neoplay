@@ -1,13 +1,15 @@
 import { storageKeys } from '$lib/constants/storage.const';
 import axios from 'axios';
 
+/**
+ * Exchange authorization code for access token (initial OAuth flow)
+ */
 export const getAccessToken = async (client_id: string, code: string, code_verifier: string) => {
 	const params = new URLSearchParams({
 		grant_type: 'authorization_code',
 		client_id,
 		code,
 		code_verifier,
-		// redirect_uri: 'neoplay://callback'
 		redirect_uri: 'http://127.0.0.1:3008/callback'
 	});
 
@@ -16,35 +18,15 @@ export const getAccessToken = async (client_id: string, code: string, code_verif
 		.then((res) => res.data as SpotifyAccessTokenResponse);
 };
 
-export const saveSpotifyAccessTokenResponse = (token: SpotifyAccessTokenResponse) => {
-	localStorage.setItem(storageKeys.accessToken, JSON.stringify(token));
-};
-
-export const refreshAccessToken = async (client_id: string, refresh_token: string) => {
-	const params = new URLSearchParams({
-		grant_type: 'refresh_token',
-		client_id,
-		refresh_token
-	});
-
-	const response = await axios
-		.post('https://accounts.spotify.com/api/token', params)
-		.then((res) => res.data as SpotifyAccessTokenResponse);
-
-	// Preserve the original refresh_token if a new one isn't provided
-	if (!response.refresh_token) {
-		response.refresh_token = refresh_token;
-	}
-
-	return response;
-};
-
+/**
+ * Check if there's a saved token and client ID in localStorage.
+ * Returns the raw token data - the auth strategy handles format conversion.
+ */
 export const getSavedAccessToken = () => {
-	const accessTokenRaw = localStorage.getItem(storageKeys.accessToken) as string;
-	const clientId = localStorage.getItem(storageKeys.clientId) as string;
+	const accessTokenRaw = localStorage.getItem(storageKeys.accessToken);
+	const clientId = localStorage.getItem(storageKeys.clientId);
 
 	if (!accessTokenRaw || !clientId) return { accessToken: null, clientId: null };
 
-	const accessTokenParsed = JSON.parse(accessTokenRaw) as SpotifyAccessTokenResponse;
-	return { accessToken: accessTokenParsed, clientId };
+	return { accessToken: JSON.parse(accessTokenRaw), clientId };
 };
