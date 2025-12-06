@@ -33,8 +33,8 @@
 		</button>
 	{/if}
 
-	<div class="w-full flex flex-col justify-between relative">
-		<div class="p-4 relative h-full">
+	<div class="w-full flex flex-col justify-between relative h-screen overflow-hidden">
+		<div class="p-4 relative flex-1 overflow-hidden flex flex-col">
 			{#if $currentTrack}
 				<CurrentTrack />
 			{/if}

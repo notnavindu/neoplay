@@ -1,8 +1,9 @@
 <script lang="ts">
-	import MatrixContainer from '$lib/components/ui/TimeMatrix/MatrixContainer.svelte';
+	import JustifiedLyrics from '$lib/components/ui/Lyrics/JustifiedLyrics.svelte';
 	import { currentTrack } from '$lib/stores/track.store';
 </script>
 
 {#if $currentTrack}
-	<MatrixContainer />
+	<!-- <Lyrics /> -->
+	<JustifiedLyrics />
 {/if}

@@ -1,5 +1,4 @@
 <script>
-	import { page } from '$app/stores';
 	import { spotifySdk } from '$lib/stores/spotify.store';
 	import { currentTrack } from '$lib/stores/track.store';
 	import { msToMinutesSeconds } from '$lib/utils/time.utils';
@@ -8,7 +7,13 @@
 	import PlaybackControls from './PlaybackControls.svelte';
 	import TrackAttribute from './TrackAttribute.svelte';
 
-	$: expanded = $page.route.id === '/main';
+	// DEPRECRATED
+	// setting this to be a constant as spotify deprecated the core
+	// APIs required for the details matrix and audio features
+	// setting this until we find a better UI
+	// $: expanded = $page.route.id === '/main';
+
+	const expanded = false;
 </script>
 
 {#if !$currentTrack}

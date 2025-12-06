@@ -1,78 +1,69 @@
 <script lang="ts">
 	import { spotifyPlaybackState, spotifySdk } from '$lib/stores/spotify.store';
+	import { formatPlayheadTime } from '$lib/utils/time.utils';
 	import { onDestroy } from 'svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
-	import { tweened } from 'svelte/motion';
 
 	let loop: number;
-	let container: HTMLDivElement;
-	let isHovering = false;
-	let hoverX = 0;
-	let seekerPosition = tweened(0, {
-		duration: 1000
-	});
+	let progressBar: HTMLDivElement;
+	let currentPosition = 0;
 
 	$: duration = $spotifyPlaybackState?.duration ?? 1;
-	$: position = $spotifyPlaybackState?.position ?? 0;
 	$: paused = $spotifyPlaybackState?.paused;
 
-	const resume = () => {
+	// Sync position when playback state updates
+	$: if ($spotifyPlaybackState) {
+		currentPosition = $spotifyPlaybackState.position ?? 0;
+	}
+
+	$: progressPercent = (currentPosition / duration) * 100;
+	$: timestamp = formatPlayheadTime(currentPosition);
+
+	const startTracking = () => {
+		clearInterval(loop);
 		loop = setInterval(() => {
-			if (position < duration) {
-				position += 1000;
-				$seekerPosition = (position / duration) * 100;
+			if (currentPosition < duration) {
+				currentPosition += 100;
 			}
-		}, 1000);
+		}, 100);
 	};
 
-	const pause = () => {
+	const stopTracking = () => {
 		clearInterval(loop);
 	};
 
 	$: {
-		if (!paused) resume();
-		else pause();
+		if (!paused) startTracking();
+		else stopTracking();
 	}
 
 	onDestroy(() => {
 		clearInterval(loop);
 	});
 
-	const onMouseEnter: MouseEventHandler<HTMLDivElement> = (event) => {
-		isHovering = true;
-	};
-	const onMouseMove: MouseEventHandler<HTMLDivElement> = (event) => {
-		hoverX = event.pageX - container.getBoundingClientRect().left;
-	};
-	const onMouseLeave: MouseEventHandler<HTMLDivElement> = (event) => {
-		isHovering = false;
-	};
-
-	const onClick = () => {
-		const percent = hoverX / container.getBoundingClientRect().width;
-		const position = Math.floor(duration * percent);
-		$spotifySdk?.player.seekToPosition(position);
+	const onClick: MouseEventHandler<HTMLDivElement> = (event) => {
+		const rect = progressBar.getBoundingClientRect();
+		const percent = (event.clientX - rect.left) / rect.width;
+		const seekPosition = Math.floor(duration * percent);
+		$spotifySdk?.player.seekToPosition(seekPosition);
 	};
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-	bind:this={container}
-	class="w-full h-full relative z-40 cursor-pointer"
-	on:mouseenter={onMouseEnter}
-	on:mouseleave={onMouseLeave}
-	on:mousemove={onMouseMove}
-	on:click={onClick}
->
-	{#if isHovering}
-		<div
-			class="w-px h-full bg-white/60 absolute top-0 bottom-0 z-50"
-			style="left: {hoverX}px"
-		></div>
-	{/if}
+<div class="flex items-center gap-3 px-4 py-3">
+	<!-- Progress bar container -->
+	<div
+		bind:this={progressBar}
+		class="flex-1 h-3 border border-white/80 cursor-pointer relative"
+		on:click={onClick}
+	>
+		<!-- Progress fill -->
+		<div class="h-full bg-white/90" style="width: {progressPercent}%"></div>
+	</div>
 
-	<div class="w-px h-full bg-white absolute top-0 bottom-0" style="left: {$seekerPosition}%">
-		<div class="size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white"></div>
+	<!-- Timestamp display -->
+	<div class="text-white/80 text-sm font-mono tabular-nums whitespace-nowrap">
+		{timestamp}
 	</div>
 </div>
