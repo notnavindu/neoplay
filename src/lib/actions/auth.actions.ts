@@ -7,7 +7,8 @@ export const getAccessToken = async (client_id: string, code: string, code_verif
 		client_id,
 		code,
 		code_verifier,
-		redirect_uri: 'neoplay://callback'
+		// redirect_uri: 'neoplay://callback'
+		redirect_uri: 'http://127.0.0.1:3008/callback'
 	});
 
 	return await axios
@@ -26,9 +27,16 @@ export const refreshAccessToken = async (client_id: string, refresh_token: strin
 		refresh_token
 	});
 
-	return await axios
+	const response = await axios
 		.post('https://accounts.spotify.com/api/token', params)
 		.then((res) => res.data as SpotifyAccessTokenResponse);
+
+	// Preserve the original refresh_token if a new one isn't provided
+	if (!response.refresh_token) {
+		response.refresh_token = refresh_token;
+	}
+
+	return response;
 };
 
 export const getSavedAccessToken = () => {

@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { storageKeys } from '$lib/constants/storage.const';
+	import { pendingCallbackUrl } from '$lib/stores/auth.store';
 	import {
 		base64encode,
 		generateRandomString,
@@ -7,6 +9,7 @@
 		sha256
 	} from '$lib/utils/auth.utils';
 	import { open } from '@tauri-apps/plugin-shell';
+	import { onMount } from 'svelte';
 
 	let clientId = localStorage.getItem(storageKeys.clientId)!;
 	let authUrl: string;
@@ -14,6 +17,15 @@
 	let state: string;
 	let hashed: ArrayBuffer;
 	let codeChallenge: string;
+
+	// Dev mode detection for macOS manual URL paste
+	const isDev = import.meta.env.DEV;
+	let isMac = false;
+	let redirectUrl = '';
+
+	onMount(() => {
+		isMac = navigator.platform.toUpperCase().includes('MAC');
+	});
 
 	const handleAuthenticatePress = async () => {
 		codeVerifier = generateRandomString(64);
@@ -28,6 +40,12 @@
 		localStorage.setItem(storageKeys.codeVerifier, codeVerifier);
 
 		open(authUrl);
+	};
+
+	const handleRedirectUrlSubmit = () => {
+		if (!redirectUrl) return;
+		pendingCallbackUrl.set(redirectUrl);
+		goto('/auth/callback');
 	};
 </script>
 
@@ -53,5 +71,20 @@
 		<button class="w-fit mt-3 text-white bg-blue-500 py-1 px-2" on:click={handleAuthenticatePress}
 			>Authenticate</button
 		>
+
+		{#if isDev && isMac}
+			<div class="mt-4 pt-4 border-t border-gray-700 flex flex-col gap-2">
+				<span class="text-gray-400 text-xs">Paste redirect URL here (dev mode)</span>
+				<input
+					class="text-white p-1 w-full border-b border-blue-500 bg-black outline-none"
+					bind:value={redirectUrl}
+					placeholder="http://127.0.0.1:3008/callback?code=..."
+					type="text"
+				/>
+				<button class="w-fit text-white bg-green-600 py-1 px-2" on:click={handleRedirectUrlSubmit}>
+					Submit
+				</button>
+			</div>
+		{/if}
 	</div>
 </div>

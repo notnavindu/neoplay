@@ -3,18 +3,5 @@
 	"identifier": "default",
 	"description": "enables the default permissions",
 	"windows": ["main"],
-	"permissions": [
-		"core:path:default",
-		"core:event:default",
-		"core:window:default",
-		"core:webview:default",
-		"core:app:default",
-		"core:resources:default",
-		"core:image:default",
-		"core:menu:default",
-		"core:tray:default",
-		"deep-link:default",
-		"shell:default",
-		"shell:allow-open"
-	]
+	"permissions": ["core:default", "deep-link:default", "shell:default", "shell:allow-open"]
 }

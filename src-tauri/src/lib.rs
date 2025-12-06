@@ -7,11 +7,13 @@ pub fn run() {
             // when defining deep link schemes at runtime, you must also check `argv` here
         }))
         .plugin(tauri_plugin_deep_link::init())
-        .setup(|app| {
-            #[cfg(desktop)]
+        .setup(|_app| {
+            // Deep link registration is only needed on Windows/Linux
+            // macOS handles this via Info.plist automatically
+            #[cfg(any(windows, target_os = "linux"))]
             {
                 use tauri_plugin_deep_link::DeepLinkExt;
-                app.deep_link().register_all()?;
+                _app.deep_link().register_all()?;
             }
             Ok(())
         })

@@ -24,7 +24,8 @@ export const getAuthorizeUrl = (clientId: string, codeChallenge: string, state: 
 		response_type: 'code',
 		client_id: clientId,
 		scope: scopes,
-		redirect_uri: 'neoplay://callback',
+		// redirect_uri: 'neoplay://callback',
+		redirect_uri: 'http://127.0.0.1:3008/callback',
 		state: state,
 		code_challenge_method: 'S256',
 		code_challenge: codeChallenge
